@@ -74,3 +74,24 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+let arr = [21, 34, 12, 54, 32];
+
+// array  mutator methods
+
+// splice methods to remove element
+console.log(arr.splice(-1, 1));
+console.log(arr);
+console.log(arr.reverse());
+console.log(
+  arr.forEach((value, i) => console.log(`Index ${value} and value ${value}`))
+);
+
+// reducer method should always return
+console.log(
+  arr.reduce((sumadorPar, currentNumber) => {
+    if (currentNumber % 2 == 0) {
+      return sumadorPar + currentNumber;
+    }
+    return sumadorPar - currentNumber;
+  })
+);
