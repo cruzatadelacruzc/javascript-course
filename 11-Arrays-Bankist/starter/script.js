@@ -109,3 +109,13 @@ const calcAvgHumanAge = ages =>
 
 console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(calcAvgHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+// Empty array + fill()
+const x = new Array(7);
+console.log(x);
+x.fill(2, 3, 6);
+console.log(x);
+
+// array from()
+const y = Array.from({ length: 7 }, (current, index) => index * 6);
+console.log(y);
