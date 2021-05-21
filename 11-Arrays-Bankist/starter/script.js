@@ -109,3 +109,63 @@ const calcAvgHumanAge = ages =>
 
 console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(calcAvgHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+// Empty array + fill()
+const x = new Array(7);
+console.log(x);
+x.fill(2, 3, 6);
+console.log(x);
+
+// array from()
+const y = Array.from({ length: 7 }, (current, index) => index * 6);
+console.log(y);
+
+//TEST DATA:
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+
+// calculate portion food
+dogs.forEach(dog => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)));
+console.log(dogs);
+
+// find dog of Sarah
+const dogSarah = dogs.find(dog => dog.owners.includes('Sarah'));
+console.log(
+  `Sarah's dog eating to ${
+    dogSarah.curFood > dogSarah.recFood ? 'much' : 'little'
+  } `
+);
+
+// create arrays ownersDogEatToMuch and ownersDogEatToLittle
+const ownersDogEatToMuch = dogs
+  .filter(dog => dog.curFood > dog.recFood)
+  .flatMap(dog => dog.owners);
+console.log(`${ownersDogEatToMuch.join(' and ')}'s dogs  eat a lot`);
+
+const ownersDogEatToLittle = dogs
+  .filter(dog => dog.curFood < dog.recFood)
+  .flatMap(dog => dog.owners);
+console.log(`${ownersDogEatToLittle.join(' and ')}'s dogs eat too little`);
+
+//using some()
+
+console.log(dogs.some(dog => dog.curFood === dog.recFood));
+
+//  current > (recommended * 0.90) && current < (recommended * 1.10)
+
+const recommendedPortion = dog =>
+  dog.curFood > dog.recFood * 0.9 && dog.curFood < dog.recFood * 1.1;
+console.log(dogs.some(recommendedPortion));
+
+// using filter again
+console.log(dogs.filter(recommendedPortion));
+
+// sort it by recommended food portion in an ascending order using diference (minus)
+const dogsSorted = dogs
+  .slice()
+  .sort((dog1, dog2) => dog1.recFood - dog2.recFood);
+console.log(dogsSorted);
