@@ -224,3 +224,32 @@ class Mammals extends Animal {
 
 const dog = new Mammals('Rintintín', 2018, 'Cesar');
 dog.introduce();
+
+// Inheritance Object.create
+const CubanProto = {
+  calcAge() {
+    return new Date().getFullYear() - this.birthYear;
+  },
+  init(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  },
+};
+
+const OrientalProto = Object.create(CubanProto);
+OrientalProto.init = function (name, birthYear, district) {
+  CubanProto.init.call(this, name, birthYear);
+  this.district = district;
+};
+
+OrientalProto.introduce = function () {
+  console.log(
+    `My name is ${this.name} of ${this.calcAge()} years old. I from ${
+      this.district
+    } city`
+  );
+};
+
+const jueliet = Object.create(OrientalProto);
+jueliet.init('Jueliet', 1986, 'Guantanamo');
+jueliet.introduce();
