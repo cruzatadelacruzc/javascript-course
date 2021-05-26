@@ -72,3 +72,36 @@ const getCountry = country =>
     });
 
 btn.addEventListener('click', () => getCountry('portugal'));
+
+const whoIam = function (lat, long) {
+  fetch(`https://geocode.xyz/${lat},${long}?geoit=json`)
+    .then(response => {
+      if (!response.ok)
+        throw new Error(`Uff, problem with geoposition ${response.status}`);
+      return response.json();
+    })
+    .then(data => {
+      console.log(`You are looking for ${data.city}, ${data.country}`);
+      return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
+    })
+    .then(response => {
+      if (!response.ok)
+        throw new Error(`Uff, Country no found ${response.status}`);
+      return response.json();
+    })
+    .then(countries => {
+      console.log(
+        `${countries[0].name} has borders with:${countries[0].borders}`
+      );
+      renderCountry(countries[0]);
+    })
+    .catch(err => console.error(err.message))
+    .finally(() => {
+      countriesContainer.style.opacity = 1;
+    });
+};
+// Guantanamo -> 20.1431797, -75.2034783
+whoIam(20.1431797, -75.2034783);
+whoIam(52.508, 13.381);
+whoIam(19.037, 72.873);
+whoIam(-33.933, 18.474);
