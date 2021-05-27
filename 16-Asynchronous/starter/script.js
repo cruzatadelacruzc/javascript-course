@@ -73,7 +73,7 @@ const getCountry = country =>
 
 btn.addEventListener('click', () => getCountry('portugal'));
 
-const whoIam = function (lat, long) {
+/* const whoIam = function (lat, long) {
   fetch(`https://geocode.xyz/${lat},${long}?geoit=json`)
     .then(response => {
       if (!response.ok)
@@ -99,7 +99,37 @@ const whoIam = function (lat, long) {
     .finally(() => {
       countriesContainer.style.opacity = 1;
     });
+}; */
+
+const whoIam = async function (lat, long) {
+  try {
+    const responseGeo = await fetch(
+      `https://geocode.xyz/${lat},${long}?geoit=json`
+    );
+    const geoCountry = await responseGeo.json();
+    console.log(geoCountry);
+
+    if (!responseGeo.ok)
+      throw new Error(
+        `Uff, problem getting country geoposition(${responseGeo.status})`
+      );
+
+    const responseCountry = await fetch(
+      `https://restcountries.eu/rest/v2/name/${geoCountry.country}`
+    );
+    if (!responseGeo.ok)
+      throw new Error(
+        `Uff, problem getting country data(${responseCountry.status})`
+      );
+
+    const dataCountry = await responseCountry.json();
+    renderCountry(dataCountry[0]);
+  } catch (error) {
+    console.error(error);
+    renderError(`Upps, something went wrong 💣 ${error.message}`);
+  }
 };
+
 // Guantanamo -> 20.1431797, -75.2034783
 whoIam(20.1431797, -75.2034783);
 whoIam(52.508, 13.381);
