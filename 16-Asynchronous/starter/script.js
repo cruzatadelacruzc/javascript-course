@@ -124,14 +124,34 @@ const whoIam = async function (lat, long) {
 
     const dataCountry = await responseCountry.json();
     renderCountry(dataCountry[0]);
+
+    return `You are in ${geoCountry.city}, ${geoCountry.country}`;
   } catch (error) {
     console.error(error);
     renderError(`Upps, something went wrong 💣 ${error.message}`);
+
+    // Reject promise returned from async function
+    throw error;
   }
 };
+/* Very Ugly writte this code but, It's work
+
+ whoIam(20.1431797, -75.2034783)
+  .then(city => console.log(`You are at ${city}`))
+  .catch(err => console.log(`💣 ${err.message}💣`)); */
+
+/*  Better writte this code. Returning values from asynchronous function */
+(async function () {
+  try {
+    const city = await whoIam(20.1431797, -75.2034783);
+    console.log(`🤞 Yep, it's work: ${city}`);
+  } catch (err) {
+    console.log(`💣 ${err.message}💣`);
+  }
+})();
 
 // Guantanamo -> 20.1431797, -75.2034783
-whoIam(20.1431797, -75.2034783);
+/* whoIam(20.1431797, -75.2034783);
 whoIam(52.508, 13.381);
 whoIam(19.037, 72.873);
-whoIam(-33.933, 18.474);
+whoIam(-33.933, 18.474); */
