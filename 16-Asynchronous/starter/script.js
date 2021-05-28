@@ -141,7 +141,7 @@ const whoIam = async function (lat, long) {
   .catch(err => console.log(`💣 ${err.message}💣`)); */
 
 /*  Better writte this code. Returning values from asynchronous function */
-(async function () {
+/* (async function () {
   try {
     const city = await whoIam(20.1431797, -75.2034783);
     console.log(`🤞 Yep, it's work: ${city}`);
@@ -149,7 +149,7 @@ const whoIam = async function (lat, long) {
     console.log(`💣 ${err.message}💣`);
   }
 })();
-
+ */
 // Guantanamo -> 20.1431797, -75.2034783
 /* whoIam(20.1431797, -75.2034783);
 whoIam(52.508, 13.381);
@@ -172,3 +172,61 @@ const get3Countries = (country1, country2, country3) =>
     renderError(err.message);
   }
 })();
+
+// last challenge
+
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+const imgContainer = document.querySelector('.images');
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const img = document.createElement('img');
+    img.src = imgPath;
+
+    img.addEventListener('load', function () {
+      imgContainer.append(img);
+      resolve(img);
+    });
+
+    img.addEventListener('error', function () {
+      reject(new Error('Image not found'));
+    });
+  });
+};
+
+const loadNPause = async function () {
+  try {
+    // load image 1
+    let currentImg = await createImage('img/img-1.jpg');
+    console.log('Image 1 loaded');
+    await wait(2);
+    currentImg.style.display = 'none';
+    // load image 2
+    currentImg = await createImage('img/img-2.jpg');
+    console.log('Image 2 loaded');
+    await wait(2);
+    currentImg.style.display = 'none';
+  } catch (error) {
+    err => console.error(err);
+  }
+};
+
+// create loadAll methods
+
+const loadAll = async function (imgArr = []) {
+  try {
+    const imgs = imgArr.map(async img => await createImage(img));
+    const imgsEl = await Promise.all(imgs);
+    console.log(imgsEl);
+    imgsEl.forEach(img => img.classList.add('parallel'));
+  } catch (error) {
+    err => console.error(err);
+  }
+};
+
+loadAll(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']);
