@@ -155,3 +155,20 @@ const whoIam = async function (lat, long) {
 whoIam(52.508, 13.381);
 whoIam(19.037, 72.873);
 whoIam(-33.933, 18.474); */
+
+// running promises in parallel
+const get3Countries = (country1, country2, country3) =>
+  Promise.all([
+    getJSON(`https://restcountries.eu/rest/v2/name/${country1}`),
+    getJSON(`https://restcountries.eu/rest/v2/name/${country2}`),
+    getJSON(`https://restcountries.eu/rest/v2/name/${country3}`),
+  ]);
+
+(async function () {
+  try {
+    const data = await get3Countries('tanzania', 'usa', 'canada');
+    console.log([...data].flat());
+  } catch (error) {
+    renderError(err.message);
+  }
+})();
